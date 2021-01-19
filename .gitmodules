@@ -1,0 +1,3 @@
+[submodule "server/CLIP"]
+	path = server/CLIP
+	url = https://github.com/openai/CLIP
