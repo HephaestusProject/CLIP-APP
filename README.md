@@ -3,6 +3,7 @@
 ### prerequisite
 
 ```sh
+git clone --recursive https://github.com/HephaestusProject/CLIP-APP.git
 pip install -r server/requirements.txt
 ```
 
