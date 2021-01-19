@@ -13,13 +13,15 @@ device = "cuda" if torch.cuda.is_available() else "cpu"
 model, preprocess = clip.load("ViT-B/32", device=device)
 
 
-@app.route("/pred/<dataset>/<subpath>", methods=['POST'])
+@app.route("/pred/<dataset>", methods=['POST'])
 @cross_origin()
-def get_gen(dataset, subpath):
+def get_gen(dataset):
+    params = json.loads(request.get_data(), encoding='utf-8')
+    subpath = params.get('image_path')
+    texts = params.get('texts')
+
     image = preprocess(Image.open('server/CLIP/' + subpath)).unsqueeze(0).to(device)
-    # to be fixed
-    text = ["a diagram", "a dog", "a cat"]
-    text_encoded = clip.tokenize(text).to(device)
+    text_encoded = clip.tokenize(texts).to(device)
 
     with torch.no_grad():
         image_features = model.encode_image(image)
@@ -28,7 +30,7 @@ def get_gen(dataset, subpath):
         logits_per_image, logits_per_text = model(image, text_encoded)
         probs = logits_per_image.softmax(dim=-1).cpu().numpy()
         # 1 batch
-        res = {key:value.tolist() for key, value in zip(text, probs[0])}
+        res = {key:value.tolist() for key, value in zip(texts, probs[0])}
 
     return {'result': res}
 
