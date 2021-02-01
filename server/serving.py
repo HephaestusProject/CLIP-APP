@@ -1,5 +1,5 @@
-import torch
 import clip
+import torch
 from PIL import Image
 
 device = "cuda" if torch.cuda.is_available() else "cpu"
