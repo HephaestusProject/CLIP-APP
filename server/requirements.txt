@@ -3,6 +3,6 @@ flask-cors
 ftfy
 pillow
 regex
-torch==1.7.1
+torch==2.2.0
 torchvision
 tqdm
